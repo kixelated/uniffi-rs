@@ -21,6 +21,11 @@ impl TestInterface {
         Self { value: value * 2 }
     }
 
+    #[uniffi::constructor]
+    pub fn from_interface(other: Arc<Self>) -> Self {
+        Self { value: other.value }
+    }
+
     pub fn get_value(&self) -> u32 {
         self.value
     }
@@ -36,6 +41,10 @@ impl TestInterface {
     /// foreign language.
     pub fn method_with_multi_word_arg(&self, the_argument: String) -> String {
         the_argument
+    }
+
+    pub fn clone_other(&self, other: Arc<Self>) -> Arc<Self> {
+        other
     }
 }
 

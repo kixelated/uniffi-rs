@@ -11,6 +11,22 @@ assert(roundtripOptionalInterface(TestInterface(20u))?.getValue() == 20u)
 // Test secondary constructors
 assert(TestInterface.secondaryConstructor(20u).getValue() == 40u)
 
+fun assertDestroyedArgumentRefused(call: (TestInterface) -> Unit) {
+    val destroyed = TestInterface(20u)
+    destroyed.destroy()
+    try {
+        call(destroyed)
+        throw RuntimeException("Expected destroyed argument to be refused")
+    } catch (e: IllegalStateException) {
+        assert(e.message?.contains("already been destroyed") == true)
+    }
+}
+
+// Object lowering is shared by constructors, methods, and free functions.
+assertDestroyedArgumentRefused { TestInterface.fromInterface(it) }
+assertDestroyedArgumentRefused { testInterface.cloneOther(it) }
+assertDestroyedArgumentRefused { cloneInterface(it) }
+
 // Test records that store interfaces
 val two = TwoTestInterfaces(first=TestInterface(1u), second=TestInterface(2u))
 val swapped = swapTestInterfaces(two)

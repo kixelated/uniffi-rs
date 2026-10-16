@@ -263,7 +263,7 @@ open class {{ impl_class_name }}: Disposable, AutoCloseable, {{ interface_name }
  */
 public object {{ ffi_converter_name }}: FfiConverter<{{ type_name }}, Long> {
     override fun lower(value: {{ type_name }}): Long {
-        return value.uniffiCloneHandle()
+        return value.callWithHandle { it }
     }
 
     override fun lift(value: Long): {{ type_name }} {
@@ -300,7 +300,7 @@ public object {{ ffi_converter_name }}: FfiConverter<{{ type_name }}, Long> {
     override fun lower(value: {{ type_name }}): Long {
         if (value is {{ impl_class_name }}) {
              // Rust-implemented object.  Clone the handle and return it
-            return value.uniffiCloneHandle()
+            return value.callWithHandle { it }
          } else {
             // Kotlin object, generate a new vtable handle and return that.
             return handleMap.insert(value)
