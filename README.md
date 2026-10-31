@@ -82,3 +82,17 @@ If this tool sounds interesting to you, please help us develop it! You can:
 ## Code of Conduct
 
 This project is governed by Mozilla's [Community Participation Guidelines](./CODE_OF_CONDUCT.md).
+
+## MoQ upstream audit
+
+Checked [mozilla/uniffi-rs](https://github.com/mozilla/uniffi-rs) through
+[`ef9625b68`](https://github.com/mozilla/uniffi-rs/commit/ef9625b68dd51207f55f024a27649e58edb52b09)
+on 2026-10-31; its public GitHub advisory list was empty.
+The MoQ 0.32 branch carries the destroyed-object argument fix and
+[`f903c36c`](https://github.com/mozilla/uniffi-rs/commit/f903c36c09fd396560e4dc28763a97a5c552e1c3)'s
+running-event-loop preference, preserving the 0.32 setter name.
+The Kotlin checksum mask is already in 0.32.2. MoQ currently exports no foreign
+traits, custom types, or recursive enums, so the corresponding callback,
+custom-type, and recursion fixes do not change its bindings. The source parser,
+JNI generator, mutable-byte support, and library-mode removal are outside this
+0.32 maintenance branch.
